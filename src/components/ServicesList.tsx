@@ -22,8 +22,8 @@ export const ServicesList = () => {
         service.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
         service.provider.name.toLowerCase().includes(searchTerm.toLowerCase());
       
-      const matchesCity = !selectedCity || service.city === selectedCity;
-      const matchesCategory = !selectedCategory || service.category === selectedCategory;
+      const matchesCity = !selectedCity || selectedCity === "all" || service.city === selectedCity;
+      const matchesCategory = !selectedCategory || selectedCategory === "all" || service.category === selectedCategory;
       
       return matchesSearch && matchesCity && matchesCategory && service.isActive;
     });
@@ -61,7 +61,7 @@ export const ServicesList = () => {
               <SelectValue placeholder="Filter by city" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All cities</SelectItem>
+              <SelectItem value="all">All cities</SelectItem>
               {cities.map((city) => (
                 <SelectItem key={city} value={city}>
                   {city}
@@ -75,7 +75,7 @@ export const ServicesList = () => {
               <SelectValue placeholder="Filter by category" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All categories</SelectItem>
+              <SelectItem value="all">All categories</SelectItem>
               {categories.map((category) => (
                 <SelectItem key={category} value={category}>
                   {category}
