@@ -4,14 +4,25 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cities } from "@/data/mockServices";
+import { useSearch } from "@/contexts/SearchContext";
 
 export const HeroSection = () => {
   const [service, setService] = useState("");
   const [city, setCity] = useState("");
+  const { setSearchTerm, setSelectedCity } = useSearch();
 
   const handleSearch = () => {
     console.log("Searching for:", { service, city });
-    // TODO: Implement actual search functionality
+    
+    // Update search context
+    setSearchTerm(service);
+    setSelectedCity(city);
+    
+    // Scroll to services section
+    const servicesSection = document.getElementById('services-section');
+    if (servicesSection) {
+      servicesSection.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (

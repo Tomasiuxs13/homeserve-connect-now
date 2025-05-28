@@ -1,14 +1,26 @@
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ServiceCard } from "./ServiceCard";
 import { mockServices, cities, type MockService } from "@/data/mockServices";
+import { useSearch } from "@/contexts/SearchContext";
 
 export const ServicesList = () => {
+  const { searchTerm: heroSearchTerm, selectedCity: heroSelectedCity } = useSearch();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+
+  // Update local state when hero search changes
+  useEffect(() => {
+    if (heroSearchTerm) {
+      setSearchTerm(heroSearchTerm);
+    }
+    if (heroSelectedCity) {
+      setSelectedCity(heroSelectedCity);
+    }
+  }, [heroSearchTerm, heroSelectedCity]);
 
   const categories = useMemo(() => {
     const uniqueCategories = Array.from(new Set(mockServices.map(service => service.category)));
@@ -35,7 +47,7 @@ export const ServicesList = () => {
   };
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section id="services-section" className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 font-inter mb-4">

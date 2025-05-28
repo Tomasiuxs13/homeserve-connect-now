@@ -1,12 +1,43 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { UserMenu } from "@/components/UserMenu";
 import { useAuth } from "@/contexts/AuthContext";
 
 export const Header = () => {
   const { user } = useAuth();
+  const location = useLocation();
+
+  const scrollToSection = (sectionId: string) => {
+    // If we're not on the home page, navigate there first
+    if (location.pathname !== '/') {
+      window.location.href = `/#${sectionId}`;
+      return;
+    }
+    
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleFindServices = () => {
+    scrollToSection('services-section');
+  };
+
+  const handleHowItWorks = () => {
+    scrollToSection('how-it-works-section');
+  };
+
+  const handleBecomeProvider = () => {
+    // Navigate to provider dashboard or show auth if not logged in
+    if (user) {
+      window.location.href = '/provider-dashboard';
+    } else {
+      window.location.href = '/auth';
+    }
+  };
 
   return (
     <header className="bg-white shadow-sm border-b">
@@ -19,9 +50,24 @@ export const Header = () => {
           </div>
           
           <nav className="hidden md:flex space-x-8">
-            <a href="#" className="text-gray-700 hover:text-primary transition-colors">Find Services</a>
-            <a href="#" className="text-gray-700 hover:text-primary transition-colors">Become a Provider</a>
-            <a href="#" className="text-gray-700 hover:text-primary transition-colors">How it Works</a>
+            <button 
+              onClick={handleFindServices}
+              className="text-gray-700 hover:text-primary transition-colors cursor-pointer"
+            >
+              Find Services
+            </button>
+            <button 
+              onClick={handleBecomeProvider}
+              className="text-gray-700 hover:text-primary transition-colors cursor-pointer"
+            >
+              Become a Provider
+            </button>
+            <button 
+              onClick={handleHowItWorks}
+              className="text-gray-700 hover:text-primary transition-colors cursor-pointer"
+            >
+              How it Works
+            </button>
           </nav>
           
           <div className="flex items-center space-x-4">
