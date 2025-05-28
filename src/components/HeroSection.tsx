@@ -1,8 +1,19 @@
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { cities } from "@/data/mockServices";
 
 export const HeroSection = () => {
+  const [service, setService] = useState("");
+  const [city, setCity] = useState("");
+
+  const handleSearch = () => {
+    console.log("Searching for:", { service, city });
+    // TODO: Implement actual search functionality
+  };
+
   return (
     <section className="bg-gradient-to-br from-primary to-primary/80 text-white py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -18,20 +29,33 @@ export const HeroSection = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <div className="flex-1 max-w-md">
-              <input
+              <Input
                 type="text"
                 placeholder="What service do you need?"
+                value={service}
+                onChange={(e) => setService(e.target.value)}
                 className="w-full px-6 py-4 text-gray-900 text-lg rounded-lg border-0 focus:ring-2 focus:ring-accent"
               />
             </div>
             <div className="flex-1 max-w-md">
-              <input
-                type="text"
-                placeholder="Enter your zip code"
-                className="w-full px-6 py-4 text-gray-900 text-lg rounded-lg border-0 focus:ring-2 focus:ring-accent"
-              />
+              <Select value={city} onValueChange={setCity}>
+                <SelectTrigger className="w-full px-6 py-4 text-gray-900 text-lg rounded-lg border-0 focus:ring-2 focus:ring-accent">
+                  <SelectValue placeholder="Select your city" />
+                </SelectTrigger>
+                <SelectContent>
+                  {cities.map((cityName) => (
+                    <SelectItem key={cityName} value={cityName}>
+                      {cityName}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-            <Button size="lg" className="bg-accent hover:bg-accent/90 text-gray-900 font-semibold px-8 py-4 text-lg">
+            <Button 
+              size="lg" 
+              className="bg-accent hover:bg-accent/90 text-gray-900 font-semibold px-8 py-4 text-lg"
+              onClick={handleSearch}
+            >
               Find Services
             </Button>
           </div>
